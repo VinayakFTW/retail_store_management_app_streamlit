@@ -1,6 +1,18 @@
 import mysql.connector as ms
 import pandas as pd
 
+def get_connection(db_name):
+
+    conn = ms.connect(
+        host="localhost",     
+        user="root",          
+        password="vini", 
+        database=db_name
+    )
+
+    cursor = conn.cursor()
+
+    return cursor
 
 
 def sql_to_df(table_name,_cursor):
@@ -12,17 +24,10 @@ def sql_to_df(table_name,_cursor):
     
     return df
 
-def load_data(db_name):
-    global cursor
-    conn = ms.connect(
-        host="localhost",     
-        user="root",          
-        password="vini", 
-        database=db_name
-    )
 
-    cursor = conn.cursor()
 
+def load_data(cursor):
+    
     cursor.execute("SHOW TABLES;")
     tables = cursor.fetchall()
     dataframes = {}
