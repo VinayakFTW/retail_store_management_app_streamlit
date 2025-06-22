@@ -10,35 +10,39 @@ def get_connection(db_name):
         database=db_name
     )
 
+
+    return conn
+
+
+def sql_to_df(table_name):
+    conn = get_connection("retail_store")
     cursor = conn.cursor()
-
-    return cursor
-
-
-def sql_to_df(table_name,_cursor):
-    
-    _cursor.execute(f"SELECT * FROM {table_name}")
-    result = _cursor.fetchall()
-
+    cursor.execute(f"SELECT * FROM {table_name}")
+    result = cursor.fetchall()
+    columns = cursor.column_names
     df = pd.DataFrame(result)
+    df.columns = columns
     
     return df
 
 
 
-def load_data(cursor):
-    
+def load_data():
+    conn = get_connection("retail_store")
+    cursor = conn.cursor()
     cursor.execute("SHOW TABLES;")
     tables = cursor.fetchall()
     dataframes = {}
     for i in tables:
         table_name = i[0]
-        dataframes[table_name] = sql_to_df(table_name,cursor)
+        dataframes[table_name] = sql_to_df(table_name)
 
     return dataframes
 
 
+def add_categories(cursor,cat_name):
 
+    return 
 
 
 
